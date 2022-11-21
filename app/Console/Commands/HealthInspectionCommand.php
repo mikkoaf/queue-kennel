@@ -11,7 +11,7 @@ class HealthInspectionCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'dogs:check-up {dog : ID of the dog to check up on}';
 
     /**
      * The console command description.
