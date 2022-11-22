@@ -42,7 +42,7 @@ class FeedDogsCommand extends Command
         })->catch(function (Batch $batch, Throwable $e) {
             Log::info($batch->name.' resulted in an exception '.$e->getMessage());
         })->finally(function (Batch $batch) {
-            Log::info('The '.$batch->name.' batch is now complete');
+            Log::info('The '.$batch->name.' batch has now ended');
         })->name('Chow time')
             ->dispatch();
         return Command::SUCCESS;
