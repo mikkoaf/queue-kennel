@@ -37,8 +37,8 @@ class HealthInspectionCommand extends Command
         Bus::chain([
             new CheckTeethJob($dog),
             new CheckWeightJob($dog),
-        ])->catch(function (Throwable $e) {
-            CallDoctorJob::dispatch();
+        ])->catch(function (Throwable $e) use ($dog) {
+            CallDoctorJob::dispatch($dog);
         })->dispatch();
         return Command::SUCCESS;
     }
