@@ -2,7 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\CallDoctorJob;
+use App\Jobs\CheckTeethJob;
+use App\Jobs\CheckWeightJob;
+use App\Models\Dog;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Bus;
+use Throwable;
 
 class HealthInspectionCommand extends Command
 {
@@ -27,6 +33,13 @@ class HealthInspectionCommand extends Command
      */
     public function handle()
     {
+        $dog = Dog::find($this->argument('dog'));
+        Bus::chain([
+            new CheckTeethJob($dog),
+            new CheckWeightJob($dog),
+        ])->catch(function (Throwable $e) {
+            CallDoctorJob::dispatch();
+        })->dispatch();
         return Command::SUCCESS;
     }
 }
